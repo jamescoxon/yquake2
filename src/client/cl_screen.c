@@ -26,6 +26,7 @@
  */
 
 #include "header/client.h"
+#include "header/qrcodegen.h"
 
 float scr_con_current; /* aproaches scr_conlines at scr_conspeed */
 float scr_conlines; /* 0.0 to 1.0 lines of console to display */
@@ -36,6 +37,7 @@ int scr_draw_loading;
 
 vrect_t scr_vrect; /* position of render window on screen */
 
+int display_qr_code = 0;
 cvar_t *scr_viewsize;
 cvar_t *scr_conspeed;
 cvar_t *scr_centertime;
@@ -1129,6 +1131,41 @@ SCR_ExecuteLayoutString(char *s)
 			token = COM_Parse(&s);
 			value = (int)strtol(token, (char **)NULL, 10);
 
+			if (value == 0) {
+//				const char *text = "xrb_3j8xtnbqyn5rkueosfr7dbf9sth8ta16n3wpd51oogrjmsy4oofagw6jcmmw";  // User-supplied text
+        	                char text[66];
+                	        sprintf(text, "xrb_%s", cls.server_address);  // User-supplied text
+				enum qrcodegen_Ecc errCorLvl = qrcodegen_Ecc_LOW;  // Error correction level
+	
+				// Make and print the QR Code symbol
+				uint8_t qrcode[qrcodegen_BUFFER_LEN_MAX];
+				uint8_t tempBuffer[qrcodegen_BUFFER_LEN_MAX];
+				bool ok = qrcodegen_encodeText(text, tempBuffer, qrcode, errCorLvl,
+					qrcodegen_VERSION_MIN, qrcodegen_VERSION_MAX, qrcodegen_Mask_AUTO, true);
+				if (ok) {
+					int size = qrcodegen_getSize(qrcode);
+					int border = 1;
+					int pos_qr_y = 48;
+					for (int qr_y = -border; qr_y < size + border; qr_y++) {
+						char qr_line[63];
+						qr_line[0] = '#';
+						for (int qr_x = border; qr_x < size + border; qr_x++) {
+							if(qrcodegen_getModule(qrcode, qr_x - 1, qr_y) == true){
+								qr_line[qr_x] = '\5'; }
+							else{
+								qr_line[qr_x] = '#'; }
+                       	       		//fputs((qrcodegen_getModule(qrcode, x, y) ? "\6" : "\5"), stdout);
+                       	       
+                      				}
+						qr_line[size + border] = '#';
+
+						DrawStringScaled(x + scale*160, y + scale*pos_qr_y, va("%s", qr_line), scale);
+						pos_qr_y = pos_qr_y + 8;
+               				 }
+
+				}
+			}
+
 			if ((value >= MAX_CLIENTS) || (value < 0))
 			{
 				Com_Error(ERR_DROP, "client >= MAX_CLIENTS");
@@ -1149,7 +1186,8 @@ SCR_ExecuteLayoutString(char *s)
 			DrawAltStringScaled(x + scale*32, y + scale*8, "Score: ", scale);
 			DrawAltStringScaled(x + scale*(32 + 7 * 8), y + scale*8, va("%i", score), scale);
 			DrawStringScaled(x + scale*32, y + scale*16, va("Ping:  %i", ping), scale);
-			DrawStringScaled(x + scale*32, y + scale*24, va("Time:  %i", time), scale);
+			DrawStringScaled(x + scale*32, y + scale*24, va("T1me:  %i", time), scale);
+			DrawStringScaled(x + scale*32, y + scale*32, va(""), scale);
 
 			if (!ci->icon)
 			{

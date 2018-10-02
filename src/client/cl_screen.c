@@ -1145,7 +1145,7 @@ SCR_ExecuteLayoutString(char *s)
 				if (ok) {
 					int size = qrcodegen_getSize(qrcode);
 					int border = 1;
-					int pos_qr_y = 48;
+					int pos_qr_y = 1;
 					for (int qr_y = -border; qr_y < size + border; qr_y++) {
 						char qr_line[63];
 						qr_line[0] = '#';

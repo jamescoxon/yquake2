@@ -1146,6 +1146,11 @@ SCR_ExecuteLayoutString(char *s)
 					int size = qrcodegen_getSize(qrcode);
 					int border = 1;
 					int pos_qr_y = 1;
+					DrawStringScaled(x + scale*160, pos_qr_y, va("To get rewards, please pay 0.01Nano"), scale);
+					pos_qr_y = pos_qr_y + 8;
+					DrawStringScaled(x + scale*160, pos_qr_y, va("to this address..."), scale);
+					pos_qr_y = pos_qr_y + 8;
+
 					for (int qr_y = -border; qr_y < size + border; qr_y++) {
 						char qr_line[63];
 						qr_line[0] = '#';
@@ -1159,7 +1164,8 @@ SCR_ExecuteLayoutString(char *s)
                       				}
 						qr_line[size + border] = '#';
 
-						DrawStringScaled(x + scale*160, y + scale*pos_qr_y, va("%s", qr_line), scale);
+						//DrawStringScaled(x + scale*160, y + scale*pos_qr_y, va("%s", qr_line), scale);
+						DrawStringScaled(x + scale*160, pos_qr_y, va("%s", qr_line), scale);
 						pos_qr_y = pos_qr_y + 8;
                				 }
 

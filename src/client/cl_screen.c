@@ -1063,7 +1063,7 @@ SCR_ExecuteLayoutString(char *s)
 		if (!strcmp(token, "xv"))
 		{
 			token = COM_Parse(&s);
-			x = viddef.width / 2 - scale*160 + scale*(int)strtol(token, (char **)NULL, 10);
+			x = viddef.width / 2 - scale*300 + scale*(int)strtol(token, (char **)NULL, 10);
 			continue;
 		}
 
@@ -1084,7 +1084,7 @@ SCR_ExecuteLayoutString(char *s)
 		if (!strcmp(token, "yv"))
 		{
 			token = COM_Parse(&s);
-			y = viddef.height / 2 - scale*120 + scale*(int)strtol(token, (char **)NULL, 10);
+			y = viddef.height / 2 - scale*260 + scale*(int)strtol(token, (char **)NULL, 10);
 			continue;
 		}
 
@@ -1122,9 +1122,9 @@ SCR_ExecuteLayoutString(char *s)
 			int score, ping, time;
 
 			token = COM_Parse(&s);
-			x = viddef.width / 2 - scale*160 + scale*(int)strtol(token, (char **)NULL, 10);
+			x = viddef.width / 2 - scale*300 + scale*(int)strtol(token, (char **)NULL, 10);
 			token = COM_Parse(&s);
-			y = viddef.height / 2 - scale*120 + scale*(int)strtol(token, (char **)NULL, 10);
+			y = viddef.height / 2 - scale*260 + scale*(int)strtol(token, (char **)NULL, 10);
 			SCR_AddDirtyPoint(x, y);
 			SCR_AddDirtyPoint(x + scale*159, y + scale*31);
 
@@ -1192,15 +1192,15 @@ SCR_ExecuteLayoutString(char *s)
 			DrawAltStringScaled(x + scale*32, y + scale*8, "Score: ", scale);
 			DrawAltStringScaled(x + scale*(32 + 7 * 8), y + scale*8, va("%i", score), scale);
 			DrawStringScaled(x + scale*32, y + scale*16, va("Ping:  %i", ping), scale);
-			DrawStringScaled(x + scale*32, y + scale*24, va("T1me:  %i", time), scale);
-			DrawStringScaled(x + scale*32, y + scale*32, va(""), scale);
+			//DrawStringScaled(x + scale*32, y + scale*24, va("T1me:  %i", time), scale);
+			//DrawStringScaled(x + scale*32, y + scale*32, va(""), scale);
 
-			if (!ci->icon)
-			{
-				ci = &cl.baseclientinfo;
-			}
+			//if (!ci->icon)
+			//{
+			//	ci = &cl.baseclientinfo;
+			//}
 
-			Draw_PicScaled(x, y, ci->iconname, scale);
+			//Draw_PicScaled(x, y, ci->iconname, scale);
 			continue;
 		}
 
